@@ -38,9 +38,10 @@ test("server-renders the RandomCam welcome screen", async () => {
 });
 
 test("keeps the entry flow and safety copy in the shipped source", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, layout, styles, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
@@ -52,6 +53,9 @@ test("keeps the entry flow and safety copy in the shipped source", async () => {
   assert.match(page, /randomcam-moderation/);
   assert.match(page, /Nudity, harassment and solicitation are prohibited/);
   assert.match(layout, /RandomCam — Random Video Chat/);
+  assert.match(page, /hero--welcome/);
+  assert.match(styles, /randomcam-hero\.png/);
+  assert.match(styles, /linear-gradient/);
   assert.match(packageJson, /"build":/);
   assert.match(packageJson, /"deploy":/);
   assert.doesNotMatch(page, /codex-preview|SkeletonPreview|react-loading-skeleton/i);

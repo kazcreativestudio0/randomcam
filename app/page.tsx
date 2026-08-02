@@ -238,7 +238,7 @@ export default function Home() {
       </header>
 
       {screen === "welcome" && (
-        <section className="hero" id="top">
+        <section className="hero hero--welcome" id="top">
           <div className="hero-copy">
             <p className="eyebrow">RANDOM VIDEO CHAT · 18+</p>
             <h1>Talk to someone new.</h1>
