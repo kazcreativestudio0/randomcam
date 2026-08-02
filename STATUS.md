@@ -62,7 +62,14 @@ Cloudflare Workers Builds をGitHub `kazcreativestudio0/randomcam` の `main` �
 
 ## アクセス・オンライン状況
 
-- Cloudflare Worker Observability は有効。CloudflareダッシュボードのWorkerメトリクスで、リクエスト数・エラー率・実行時間を集計で確認する
+- Cloudflare Worker Observability は有効。公開後は Cloudflare ダッシュボードの **Workers & Pages → randomcam → Metrics / Observability** で、リクエスト数・エラー率・実行時間を集計で確認する
 - Cloudflare Pages の404や所有者限定ホスティングへのアクセスは、実利用の来訪数として数えない
 - この時点では実際の通話ルームも在室状態もないため、**同時オンライン人数は測定できない**
 - 将来は、通話開始後に匿名の短期heartbeatをDurable Objectへ送ることで、個人を追跡せずに「現在接続中の概数」だけを集計できる。開始・離脱・一定時間無応答で減算し、IPアドレス・アカウント・会話内容は保存しない
+
+### 過去データの確認結果（2026-08-02）
+
+- GitHub Pages は未設定。そこから取得できるサイト利用データはない
+- GitHub リポジトリの直近14日間の閲覧数は 0、clone は8回・ユニーク7件。これは**ソースコードの取得**であり、RandomCamの利用人数ではない
+- 所有者限定の旧ホスティングには、トップページへの200応答と多数の静的アセット要求のログが残る。ただし、認証済みのプレビュー利用を含み、同一閲覧で複数要求が発生するため、来訪者数や利用者数には換算できない
+- Cloudflare Web Analytics のサイト計測は未設定で、過去分を遡って補完することはできない。今後ユニーク来訪の推定が必要なら、公開URLが確定してからCloudflare Web Analyticsを追加する（Cookieを使わない集計方式）
