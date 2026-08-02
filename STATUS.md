@@ -13,7 +13,7 @@
 - Cloudflare Pages の本番URL: `https://randomcam.pages.dev` は 2026-08-02 時点で **404**。公開中とは扱えない
 - 所有者限定の別ホスティングには同コミットのバージョンが存在するが、一般公開ではない
 
-したがって、**GitHub main からCloudflare Workerへ自動公開する設定は、Cloudflare GitHub Appの認可完了待ちです。** Pagesは本番基盤に使いません。
+**GitHub main → Cloudflare Workers Builds の接続は完了。** 対象は kazcreativestudio0/randomcam の main、Build command は npm run build、Deploy command は npx wrangler deploy。Pagesは本番基盤に使いません。
 
 ## 現在できること
 
@@ -56,7 +56,7 @@ npm test
 2. npm test を通す
 3. GitHub の `main` へ commit / push する
 4. Cloudflare Workers Builds のGitHub連携が有効なら、`main` へのpushでCloudflare Workerへ自動反映される
-5. **現在はGitHub Appの接続が未完了のため自動反映はまだ動かない。** 当面は `npm run deploy` で手動反映する（本番公開を伴う）
+5. Cloudflare Workers Builds の履歴で、そのpushのビルド成功と randomcam へのデプロイを確認する。失敗時は直前の公開版が維持される
 6. 公開URLへアクセスし、200応答と主要フローを確認する
 
 ## Cloudflare 自動デプロイに進む前の判断
@@ -65,7 +65,7 @@ npm test
 
 Cloudflare Workers Builds をGitHub `kazcreativestudio0/randomcam` の `main` に接続し、Build command=`npm run build`、Deploy command=`npx wrangler deploy` とする。これが有効なら、GitHub pushが自動デプロイの起点になる。
 
-この接続には、Cloudflareダッシュボードで **Cloudflare Workers and Pages GitHub App** を `kazcreativestudio0/randomcam` に認可する一度だけのサインイン操作が必要。認可後は Workers & Pages → randomcam → Settings → Builds で上記のbuild/deploy設定を保存し、次の `main` push で自動反映を確認する。
+Cloudflareダッシュボードの **Workers & Pages → randomcam → Settings → Builds** で、対象リポジトリ・ブランチ・Build/Deploy commandを確認できる。通常更新時は、main push後に同画面の最新Buildが成功していることを確認する。
 
 ## アクセス・オンライン状況
 
