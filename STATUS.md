@@ -7,7 +7,8 @@
 **画面プロトタイプはあるが、ランダム通話サービスとしては未完成です。**
 
 - GitHub リポジトリ: `kazcreativestudio0/randomcam`（`main`）
-- ローカル確認済みコミット: `67a13014`（2026-07-30）
+- 現在の公開コミット: `82ff48e`（2026-08-02）
+- 公開URL: `https://randomcam.kaz-creative-studio0.workers.dev`（200応答を確認済み）
 - Cloudflare Pages プロジェクト: `randomcam` は存在するが、GitHub 連携は **未接続**（Git Provider: No）。現構成では本番基盤に使わない
 - Cloudflare Pages の本番URL: `https://randomcam.pages.dev` は 2026-08-02 時点で **404**。公開中とは扱えない
 - 所有者限定の別ホスティングには同コミットのバージョンが存在するが、一般公開ではない
@@ -51,7 +52,7 @@ npm test
 2. テストをRandomCamの実装に合わせて修正し、`npm test` を通す
 3. GitHub の `main` へ commit / push する
 4. Cloudflare Workers Builds のGitHub連携が有効なら、`main` へのpushでCloudflare Workerへ自動反映される
-5. 連携が未設定・停止中なら、`npm run deploy` で手動反映する（本番公開を伴う）
+5. **現在はGitHub Appの接続が未完了のため自動反映はまだ動かない。** 当面は `npm run deploy` で手動反映する（本番公開を伴う）
 6. 公開URLへアクセスし、200応答と主要フローを確認する
 
 ## Cloudflare 自動デプロイに進む前の判断
@@ -59,6 +60,8 @@ npm test
 このコードはサーバー側Workerを含むため、Cloudflare Workersを本番基盤にする。`wrangler.json` はWorker名・生成物・静的アセットを固定し、`npm run deploy` はこの構成を本番へ送る。
 
 Cloudflare Workers Builds をGitHub `kazcreativestudio0/randomcam` の `main` に接続し、Build command=`npm run build`、Deploy command=`npx wrangler deploy` とする。これが有効なら、GitHub pushが自動デプロイの起点になる。
+
+この接続には、Cloudflareダッシュボードで **Cloudflare Workers and Pages GitHub App** を `kazcreativestudio0/randomcam` に認可する一度だけのサインイン操作が必要。認可後は Workers & Pages → randomcam → Settings → Builds で上記のbuild/deploy設定を保存し、次の `main` push で自動反映を確認する。
 
 ## アクセス・オンライン状況
 
