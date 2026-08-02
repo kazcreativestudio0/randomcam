@@ -4,29 +4,32 @@
 
 ## 結論
 
-**画面プロトタイプはあるが、ランダム通話サービスとしては未完成です。**
+**Cloudflare Workerで一般公開中。GitHub mainを正本として更新する。**
 
 - GitHub リポジトリ: `kazcreativestudio0/randomcam`（`main`）
-- 現在の公開コミット: `82ff48e`（2026-08-02）
+- 公開基盤: Cloudflare Worker randomcam（PagesのURLではなく下記URLを共有する）
 - 公開URL: `https://randomcam.kaz-creative-studio0.workers.dev`（200応答を確認済み）
 - Cloudflare Pages プロジェクト: `randomcam` は存在するが、GitHub 連携は **未接続**（Git Provider: No）。現構成では本番基盤に使わない
 - Cloudflare Pages の本番URL: `https://randomcam.pages.dev` は 2026-08-02 時点で **404**。公開中とは扱えない
 - 所有者限定の別ホスティングには同コミットのバージョンが存在するが、一般公開ではない
 
-したがって、**GitHub の `main` へ push して Cloudflare Pages へ自動公開される状態ではありません。**
+したがって、**GitHub main からCloudflare Workerへ自動公開する設定は、Cloudflare GitHub Appの認可完了待ちです。** Pagesは本番基盤に使いません。
 
 ## 現在できること
 
 - 18歳以上の確認後、ブラウザのカメラ・マイク許可を要求する
 - 自分のカメラ映像を確認する
-- 「Enter the room」後にベータ待機画面を表示する
+- 世界共通の待機室へ入り、2人が同時に待機していれば1対1マッチを開始する
+- WebRTCシグナリング、通話の終了・次の相手、通報のUIを備える
+- 英語・日本語の案内ページ（/en、/ja）と検索向けメタデータを備える
 
-## まだできないこと
+## 公開前／運用上の重大な制約
 
-- 相手ユーザーとのマッチング、WebRTC通話、シグナリング
-- ルーム管理、切断・次の相手、通報の実機能
-- アカウント、年齢確認の実効性、モデレーション、プライバシー/利用規約の実ページ
-- 通話サービスに必要な永続データ・監査・運用導線
+- 年齢確認は自己申告のみ。利用規約・プライバシー方針・問い合わせ先の実ページも未整備
+- WebRTCはSTUNのみでTURN中継がない。ネットワークの組み合わせによって通話接続できない
+- 直接のP2P通話では相手にネットワーク情報が伝わる可能性がある。TURN導入と明示的なプライバシー説明が必要
+- 待機キューの異常終了時の自動失効・レート制限・本格的な不正対策が未整備
+- 通報用WorkerとD1は動作構成を持つが、実運用の監視・管理者手順・証跡保護を確認してから本格運用する
 
 ## ローカル開発と検証
 
@@ -43,13 +46,14 @@ npm test
 2026-08-02 の確認結果:
 
 - `npm run build`: 成功
-- `npm run lint`: 成功
-- `npm test`: 失敗。実装済みのRandomCam画面を、削除済みのスターター用プレビューとして検証する古いテストが2件残っているため
+- npm run lint: エラーなし（補助Worker 3件の既存warningのみ）
+- npm test: 成功（2件）
+- 補助Worker（randomcam-matcher、randomcam-moderation）の wrangler deploy --dry-run: 成功
 
 ## 通常の更新フロー（現状）
 
 1. ローカルで変更し、上記の build と lint を通す
-2. テストをRandomCamの実装に合わせて修正し、`npm test` を通す
+2. npm test を通す
 3. GitHub の `main` へ commit / push する
 4. Cloudflare Workers Builds のGitHub連携が有効なら、`main` へのpushでCloudflare Workerへ自動反映される
 5. **現在はGitHub Appの接続が未完了のため自動反映はまだ動かない。** 当面は `npm run deploy` で手動反映する（本番公開を伴う）
@@ -67,7 +71,7 @@ Cloudflare Workers Builds をGitHub `kazcreativestudio0/randomcam` の `main` �
 
 - Cloudflare Worker Observability は有効。公開後は Cloudflare ダッシュボードの **Workers & Pages → randomcam → Metrics / Observability** で、リクエスト数・エラー率・実行時間を集計で確認する
 - Cloudflare Pages の404や所有者限定ホスティングへのアクセスは、実利用の来訪数として数えない
-- この時点では実際の通話ルームも在室状態もないため、**同時オンライン人数は測定できない**
+- 現状のマッチングWorkerは同時オンライン数の集計を公開していないため、**同時オンライン人数はまだ測定できない**
 - 将来は、通話開始後に匿名の短期heartbeatをDurable Objectへ送ることで、個人を追跡せずに「現在接続中の概数」だけを集計できる。開始・離脱・一定時間無応答で減算し、IPアドレス・アカウント・会話内容は保存しない
 
 ### 過去データの確認結果（2026-08-02）

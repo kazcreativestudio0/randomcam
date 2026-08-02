@@ -1,0 +1,9 @@
+{
+  "name": "randomcam-matcher",
+  "main": "index.ts",
+  "compatibility_date": "2026-07-29",
+  "durable_objects": {
+    "bindings": [{ "name": "MATCHER", "class_name": "RandomCamMatcher" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RandomCamMatcher"] }]
+}

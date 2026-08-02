@@ -29,9 +29,9 @@ test("server-renders the RandomCam welcome screen", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>RandomCam — Random Video Chat<\/title>/i);
+  assert.match(html, /<title>RandomCam — Random Video Chat for Global Conversations<\/title>/i);
   assert.match(html, /RANDOM VIDEO CHAT/);
-  assert.match(html, /Meet someone new,/);
+  assert.match(html, /Talk to someone new\./);
   assert.match(html, /Adults only · 18\+/);
   assert.match(html, /Start chatting/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
@@ -47,6 +47,9 @@ test("keeps the entry flow and safety copy in the shipped source", async () => {
   assert.match(page, /navigator\.mediaDevices\.getUserMedia/);
   assert.match(page, /confirmedAdult/);
   assert.match(page, /screen === "waiting"/);
+  assert.match(page, /screen === "call"/);
+  assert.match(page, /randomcam-matcher/);
+  assert.match(page, /randomcam-moderation/);
   assert.match(page, /Nudity, harassment and solicitation are prohibited/);
   assert.match(layout, /RandomCam — Random Video Chat/);
   assert.match(packageJson, /"build":/);
