@@ -1,4 +1,15 @@
-# vinext-starter
+# RandomCam
+
+## 事業の位置づけ
+
+RandomCamは **KAZ Creative Studio Hub 内の非公表事業** として管理する。
+
+- 外部のサイト、SNS、SEO、問い合わせ窓口は **RandomCam 単独ブランド** で運用する。
+- KAZ Creative Studio Hub との関係は、外部向けに宣伝・表示しない。
+- ただし、利用者に必要な利用規約、プライバシー表示、問い合わせ先などの透明性は必ず保つ。
+- 内部の運用区分・公開判断は [docs/venture-governance.md](docs/venture-governance.md) を参照する。
+
+## 開発メモ
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
