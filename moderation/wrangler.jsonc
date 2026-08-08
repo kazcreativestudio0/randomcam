@@ -1,0 +1,7 @@
+{
+  "name": "randomcam-moderation",
+  "main": "index.ts",
+  "compatibility_date": "2026-07-29",
+  "d1_databases": [{ "binding": "MODERATION_DB", "database_name": "randomcam-moderation", "database_id": "8d2e776a-40b0-4cca-b94d-e1234119906f" }],
+  "triggers": { "crons": ["0 3 * * *"] }
+}
